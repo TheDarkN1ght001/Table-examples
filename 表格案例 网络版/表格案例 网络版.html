@@ -79,17 +79,21 @@
   const vm = new Vue({
     el: '#app',
     data: {
-      datalist:[]
+      datalist: []
+    },
+    methods: {
+      getdata() {
+        axios({
+          methods: 'GEt',
+          url: "http://localhost:3000/shoplist",
+        }).then(res => {
+          console.log(res.data);
+          this.datalist = res.data
+        })
+      }
     },
     mounted() {
-      axios({
-        methods:'GEt',
-        url:"http://localhost:3000/shoplist",
-
-      }).then(res=>{
-        console.log(res.data);
-        this.datalist=res.data
-      })
+      this.getdata()
     },
   })
 </script>
