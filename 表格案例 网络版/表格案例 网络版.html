@@ -41,7 +41,7 @@
     <div class="add">
       品牌名称:{{newshop}}
       <input type="text" v-model='newshop'>
-      <input type="button" value="添加" @click='add' >
+      <input type="button" value="添加" @click='add'>
     </div>
 
     <div class="add">
@@ -62,7 +62,7 @@
           <td>{{item.name}}</td>
           <td>{{item.time}}</td>
           <td>
-            <a href="#">删除</a>
+            <a href="#" @click='del(item.id)'>删除</a>
           </td>
         </tr>
         <tr>
@@ -80,7 +80,7 @@
     el: '#app',
     data: {
       datalist: [],
-      newshop:''
+      newshop: ''
     },
     methods: {
       //封装数据渲染
@@ -94,16 +94,29 @@
         })
       },
       //添加功能
-      add(){
+      add() {
         axios({
-          method:'POST',
+          method: 'POST',
           url: "http://localhost:3000/shoplist",
-          data:{
-            name:this.newshop,
-            time:Date.now()
+          data: {
+            name: this.newshop,
+            time: Date.now()
           }
-        }).then(res=>{
-          if(res.status===201){
+        }).then(res => {
+          if (res.status === 201) {
+            this.getdata()
+          }
+        })
+      },
+      //删除功能
+      del(index) {
+        console.log(index);
+        axios({
+          method: 'DELETE',
+          url: "http://localhost:3000/shoplist/" + index,
+        }).then(res => {
+          console.log(res);
+          if (res.status == 200) {
             this.getdata()
           }
         })
