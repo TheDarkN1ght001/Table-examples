@@ -63,12 +63,12 @@
         <tr v-for='(item,index) in datalist' v-cloak>
           <td>{{index+1}}</td>
           <td>{{item.name}}</td>
-          <td>{{item.time}}</td>
+          <td>{{item.time | myfilter}}</td>
           <td>
             <a href="#" @click='del(item.id)'>删除</a>
           </td>
         </tr>
-        <tr>
+        <tr v-if='datalist.length===0'>
           <td colspan="4">没有品牌数据</td>
         </tr>
       </table>
@@ -79,6 +79,9 @@
 <script src="./vue.js"></script>
 <script src="./axios.js"></script>
 <script>
+  Vue.filter('myfilter', function (value) {// value：使用当前过滤器的文本
+  return moment().format('YYYY-MM-DD hh:mm:ss a')
+  })
   Vue.directive('mydirective', {
     inserted: function (el) {// el：指的是使用当前指令的 dom 元素
       el.focus()
