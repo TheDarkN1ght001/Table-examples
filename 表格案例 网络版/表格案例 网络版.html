@@ -40,7 +40,7 @@
   <div id="app">
     <div class="add">
       品牌名称:{{newshop}}
-      <input type="text" v-model='newshop'>
+      <input type="text" v-model='newshop' v-mydirective>
       <input type="button" value="添加" @click='add'>
     </div>
 
@@ -76,6 +76,11 @@
 <script src="./vue.js"></script>
 <script src="./axios.js"></script>
 <script>
+  Vue.directive('mydirective', {
+    inserted: function (el) {// el：指的是使用当前指令的 dom 元素
+      el.focus()
+    }
+  })
   const vm = new Vue({
     el: '#app',
     data: {
