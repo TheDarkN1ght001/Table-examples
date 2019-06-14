@@ -57,12 +57,12 @@
           <th>创立时间</th>
           <th>操作</th>
         </tr>
-        <tr>
-          <td>1</td>
-          <td>LV</td>
-          <td>2018-1-1</td>
+        <tr v-for='(item,index) in datalist'>
+          <td>{{index+1}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.time}}</td>
           <td>
-            <a href="#" >删除</a>
+            <a href="#">删除</a>
           </td>
         </tr>
         <tr>
@@ -72,4 +72,26 @@
     </div>
   </div>
 </body>
+<script src="./moment.js"></script>
+<script src="./vue.js"></script>
+<script src="./axios.js"></script>
+<script>
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      datalist:[]
+    },
+    mounted() {
+      axios({
+        methods:'GEt',
+        url:"http://localhost:3000/shoplist",
+
+      }).then(res=>{
+        console.log(res.data);
+        this.datalist=res.data
+      })
+    },
+  })
+</script>
+
 </html>
