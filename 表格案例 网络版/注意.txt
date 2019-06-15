@@ -1,0 +1,7 @@
+需要安装npm全局包json-server
+npm i -g json-server
+
+并开启服务器
+在json文件所在的路径下打开CMD，执行
+json-server ./db.json
+看到笑脸说明成功

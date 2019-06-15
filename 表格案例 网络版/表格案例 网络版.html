@@ -33,7 +33,8 @@
       border: 1px solid black;
       margin-bottom: 10px;
     }
-    [v-cloak]{
+
+    [v-cloak] {
       display: none;
     }
   </style>
@@ -48,8 +49,8 @@
     </div>
 
     <div class="add">
-      品牌名称:
-      <input type="text" placeholder="请输入搜索条件">
+      品牌名称:{{msg}}
+      <input type="text" placeholder="请输入搜索条件" v-model='msg'>
     </div>
 
     <div>
@@ -79,9 +80,11 @@
 <script src="./vue.js"></script>
 <script src="./axios.js"></script>
 <script>
+  //过滤器处理时间戳
   Vue.filter('myfilter', function (value) {// value：使用当前过滤器的文本
-  return moment().format('YYYY-MM-DD hh:mm:ss a')
+    return moment().format('YYYY-MM-DD hh:mm:ss a')
   })
+  //获取焦点
   Vue.directive('mydirective', {
     inserted: function (el) {// el：指的是使用当前指令的 dom 元素
       el.focus()
@@ -91,14 +94,16 @@
     el: '#app',
     data: {
       datalist: [],
-      newshop: ''
+      newshop: '',
+      msg: ''
     },
     methods: {
       //封装数据渲染
       getdata() {
         axios({
           method: 'GET',
-          url: "http://localhost:3000/shoplist",
+          //解决搜索时删除的小BUG
+          url: "http://localhost:3000/shoplist?name_like=" + this.msg,
         }).then(res => {
           this.datalist = res.data
           console.log(res.data);
@@ -131,11 +136,24 @@
             this.getdata()
           }
         })
-      }
+      },
     },
     mounted() {
       this.getdata()
     },
+    //侦听器实现查询功能
+    watch: {
+      msg(newVal, oldVal) {
+        axios({
+          method: 'GET',
+          url: 'http://localhost:3000/shoplist?name_like=' + newVal
+        }).then(res => {
+          if (res.status == 200) {
+            this.datalist = res.data
+          }
+        })
+      }
+    }
   })
 </script>
 
